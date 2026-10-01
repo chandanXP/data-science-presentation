@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NP Teachcrafters - AI & Data Science Pitch Deck</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc;
+            overflow: hidden; /* Prevent scrolling during presentation */
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2, h3, h4, .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem;
+            box-sizing: border-box;
+            transform: scale(0.95);
+        }
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            z-index: 10;
+        }
+        
+        .slide-bg-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(56,189,248,0.12) 0%, rgba(15,23,42,0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            border-radius: 50%;
+        }
+        .controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-nav {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .btn-nav:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            transform: scale(1.1);
+            box-shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.2);
+        }
+        
+        .progress-bar-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            width: 0%;
+            transition: width 0.4s ease-out;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.25rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.6); }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button class="btn-nav" id="prevBtn" onclick="changeSlide(-1)" title="Previous Slide (Left Arrow)"><i class="fas fa-chevron-left"></i></button>
+        <button class="btn-nav" id="nextBtn" onclick="changeSlide(1)" title="Next Slide (Right Arrow/Space)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <div style="position: fixed; top: 2rem; left: 2.5rem; z-index: 50; font-size: 0.875rem; font-weight: 700; letter-spacing: 1.5px; display: flex; align-items: center; gap: 0.75rem;">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">NP</div>
+        <span class="text-slate-200">TEACHCRAFTERS</span> 
+        <span class="text-sky-400 mx-2">//</span> 
+        <span class="text-slate-400 font-medium">ACADEMIC PROPOSAL</span>
+    </div>
+    <div style="position: fixed; top: 2rem; right: 2.5rem; z-index: 50; font-size: 0.875rem; font-weight: 600; color: #94a3b8; background: rgba(30,41,59,0.8); padding: 0.5rem 1rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.05);" id="slideCounter">
+        1 / 18
+    </div>
+
+    <div class="slide active" id="slide-1">
+        <div class="slide-bg-glow"></div>
+        <div class="text-center max-w-5xl">
+            <div class="inline-block px-5 py-1.5 mb-8 rounded-full border border-sky-500/40 bg-sky-500/10 text-sky-400 font-bold tracking-widest text-xs uppercase shadow-[0_0_15px_rgba(56,189,248,0.15)]">
+                Strategic Academic Partnership Proposal
+            </div>
+            <h1 class="text-6xl md:text-7xl font-bold mb-8 leading-tight tracking-tight">
+                Empowering the Next Generation of <br>
+                <span class="text-gradient">Agentic AI Engineers</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-300 mb-12 max-w-4xl mx-auto font-light leading-relaxed">
+                Bridging the critical gap between traditional academic curriculum and cutting-edge industry demands in Data Science, RAG Architectures, and Autonomous AI.
+            </p>
+            <div class="flex justify-center items-center space-x-6 text-slate-400 text-sm font-medium">
+                <span class="flex items-center gap-2"><i class="fas fa-building text-sky-500"></i> Presented by <strong>NP Teachcrafters</strong></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                <span class="flex items-center gap-2"><i class="fas fa-map-marker-alt text-sky-500"></i> Shahdol Region Expansion</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+        <div class="w-full max-w-7xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-14 text-center">Executive <span class="text-gradient">Summary</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-panel p-8 text-center hover:-translate-y-2 transition-transform duration-300 border-t-4 border-t-blue-500">
+                    <div class="w-20 h-20 mx-auto bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center text-4xl mb-8 shadow-lg shadow-blue-500/10">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Institutional Legacy</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed text-left">With over 5 years of proven excellence, we seamlessly translate academic theory into employable skills. We hold successful ongoing partnerships with top-tier institutions including AKTU, Lamrine Tech University, and PIET.</p>
+                </div>
+                <div class="glass-panel p-8 text-center border-t-4 border-t-sky-500 relative overflow-hidden transform md:-translate-y-4 z-10 shadow-2xl shadow-sky-900/20">
+                    <div class="absolute inset-0 bg-gradient-to-b from-sky-500/10 to-transparent"></div>
+                    <div class="w-20 h-20 mx-auto bg-sky-500/20 text-sky-400 rounded-2xl flex items-center justify-center text-4xl mb-8 relative z-10 shadow-[0_0_20px_rgba(56,189,248,0.3)] border border-sky-500/30">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white relative z-10">The Technological Edge</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed text-left relative z-10">Standard web development is obsolete. We train students to build <strong>Autonomous Enterprise Assistants</strong>. Our curriculum exclusively targets the highest-paying sectors: LLMs, RAG, and Agentic AI.</p>
+                </div>
+                <div class="glass-panel p-8 text-center hover:-translate-y-2 transition-transform duration-300 border-t-4 border-t-purple-500">
+                    <div class="w-20 h-20 mx-auto bg-purple-500/10 text-purple-400 rounded-2xl flex items-center justify-center text-4xl mb-8 shadow-lg shadow-purple-500/10">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">The Measurable Outcome</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed text-left">We deliver placement readiness. Graduates receive rigorous MSME & ISO Certified training, complete 3-4 enterprise capstone projects, and are funneled into high-tier internships (₹10K-₹30K stipends).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+        <div class="w-full max-w-7xl">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="w-full lg:w-1/2">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">A Foundation of <br><span class="text-gradient">Proven Excellence</span></h2>
+                    <p class="text-lg text-slate-300 mb-8 font-light">For over half a decade, NP Teachcrafters has operated as the highly trusted bridge between university classrooms and rigorous tech industry requirements.</p>
+                    <ul class="space-y-6">
+                        <li class="flex items-start bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
+                            <div class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 mr-4 shrink-0 mt-1">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg mb-1">500+ Certified Professionals</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed">Continuous delivery of high-impact training for 5 consecutive years. Our alumni network spans major IT hubs.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
+                            <div class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 mr-4 shrink-0 mt-1">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg mb-1">Premium University Partners</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed">Trusted by prestigious institutions like AKTU, Lamrine Tech University, and PIET.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-slate-800/30 p-4 rounded-xl border border-slate-700/50">
+                            <div class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 mr-4 shrink-0 mt-1">
+                                <i class="fas fa-shield-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-lg mb-1">Recognized Global Standards</h4>
+                                <p class="text-sm text-slate-400 leading-relaxed">Strictly backed by MSME certification and ISO quality standards, clearing corporate HR filters.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full lg:w-1/2 flex flex-col gap-6">
+                    <!-- GitHub Asset 1: team-students.jpg -->
+                    <div class="w-full h-80 rounded-2xl overflow-hidden border border-slate-600 shadow-2xl relative group">
+                        <div class="absolute inset-0 bg-sky-900/20 mix-blend-overlay z-10 transition-opacity duration-300 group-hover:opacity-0"></div>
+                        <img src="assets/team-students.jpg" alt="NP Teachcrafters Team and Students" class="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/800x600/1e293b/38bdf8?text=Team+Students'">
+                        <div class="absolute bottom-4 left-4 z-20">
+                            <span class="px-3 py-1.5 bg-slate-900/90 text-white text-xs font-bold rounded-md backdrop-blur border border-slate-700 shadow-lg">Our Alumni & Instructors</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="glass-panel p-5 flex flex-col items-center justify-center text-center hover:bg-slate-800/80 transition-colors">
+                            <span class="text-3xl font-bold text-white mb-1">5+</span>
+                            <span class="text-slate-400 text-[10px] uppercase tracking-widest font-semibold">Years Exp.</span>
+                        </div>
+                        <div class="glass-panel p-5 flex flex-col items-center justify-center text-center border-sky-500/40 bg-sky-900/10 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
+                            <span class="text-3xl font-bold text-sky-400 mb-1">500+</span>
+                            <span class="text-sky-200/70 text-[10px] uppercase tracking-widest font-semibold">Certified</span>
+                        </div>
+                        <div class="glass-panel p-5 flex flex-col items-center justify-center text-center hover:bg-slate-800/80 transition-colors">
+                            <span class="text-3xl font-bold text-white mb-1">100%</span>
+                            <span class="text-slate-400 text-[10px] uppercase tracking-widest font-semibold">Placement Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+        <div class="w-full max-w-7xl text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Trusted by the <span class="text-gradient">Government of India</span></h2>
+            <p class="text-xl text-slate-300 mb-14 max-w-4xl mx-auto font-light">Colleges require reliable partners. Our team has actively designed and executed training for the nation's most critical technological initiatives.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <div class="glass-panel p-8 border-t-4 border-t-orange-500 hover:shadow-[0_0_30px_rgba(249,115,22,0.15)] transition-shadow duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-2xl font-bold text-white">IndiaAI Mission</h3>
+                        <i class="fas fa-flag text-orange-500 text-2xl opacity-50"></i>
+                    </div>
+                    <p class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500 mb-4 tracking-tighter">₹10,371 Cr</p>
+                    <p class="text-slate-300 text-sm leading-relaxed">We directly contributed to the ambitious IndiaAI national project, delivering large-scale tech training across Punjab for a continuous year.</p>
+                </div>
+                
+                <div class="glass-panel p-8 border-t-4 border-t-sky-400 relative transform md:scale-110 z-10 shadow-[0_0_40px_rgba(56,189,248,0.2)] bg-slate-800/90">
+                    <div class="absolute top-0 right-0 bg-sky-500 text-white text-[10px] px-3 py-1.5 font-bold uppercase tracking-widest rounded-bl-xl shadow-md">Active Mandate</div>
+                    <div class="flex justify-between items-start mb-6 mt-2">
+                        <h3 class="text-2xl font-bold text-white">NITI Aayog (AIM)</h3>
+                        <i class="fas fa-chart-network text-sky-400 text-2xl"></i>
+                    </div>
+                    <p class="text-2xl font-bold text-sky-300 mb-4">National Expansion</p>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-4">Currently operating under NITI Aayog's transformative mandate. We are assigned to deliver critical AI and Data Science education across government ecosystems nationwide.</p>
+                </div>
+                
+                <div class="glass-panel p-8 border-t-4 border-t-emerald-500 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-shadow duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-2xl font-bold text-white">MeitY & AICTE</h3>
+                        <i class="fas fa-file-certificate text-emerald-500 text-2xl opacity-50"></i>
+                    </div>
+                    <p class="text-2xl font-bold text-emerald-400 mb-4">Policy & Pathways</p>
+                    <p class="text-slate-300 text-sm leading-relaxed">Our programs integrate with AICTE internship portals and MeitY directives, ensuring authentic, government-recognized opportunities for students.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+        <div class="w-full max-w-6xl">
+            <div class="glass-panel p-12 relative overflow-hidden border border-indigo-500/30">
+                <div class="absolute -right-20 -top-20 opacity-[0.03] text-[250px]">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row gap-12 items-center">
+                    <div class="w-full md:w-3/5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-6">
+                            <i class="fas fa-seedling"></i> Pedagogical Superiority
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Building Tech Literacy from the <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Grassroots</span></h2>
+                        <p class="text-lg text-slate-300 mb-8 font-light leading-relaxed">
+                            Before architecting advanced engineering curriculum for universities, we successfully deployed AI training to the foundational levels of India's education system.
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="bg-slate-900/50 p-6 rounded-xl border border-slate-700">
+                                <h4 class="text-5xl font-black text-indigo-400 mb-2">90+</h4>
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Govt Schools Reached</p>
+                            </div>
+                            <div class="bg-slate-900/50 p-6 rounded-xl border border-slate-700">
+                                <h4 class="text-4xl font-black text-purple-400 mb-2 mt-1">KVs & JNVs</h4>
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Premium Institutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="w-full md:w-2/5">
+                        <div class="p-8 bg-gradient-to-br from-indigo-900/40 to-slate-900 border border-indigo-500/40 rounded-2xl shadow-xl relative">
+                            <i class="fas fa-quote-left text-4xl text-indigo-500/30 absolute top-6 left-6"></i>
+                            <p class="text-lg text-indigo-100 italic relative z-10 pt-6 font-light leading-relaxed">
+                                "If our instructional team can simplify neural networks and AI mechanics for an 8th grader in a Kendriya Vidyalaya, imagine the unparalleled clarity and industry-readiness we bring to university engineering students."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+        <div class="w-full max-w-7xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">The Crisis: Why College Graduates <span class="text-red-400 border-b-4 border-red-500/50 pb-1">Fail Interviews</span></h2>
+            <p class="text-lg text-slate-300 mb-12 font-light">The technology industry has aggressively shifted its hiring parameters in the last 18 months.</p>
+            
+            <div class="flex flex-col lg:flex-row gap-10 items-stretch">
+                <div class="w-full lg:w-1/2 flex flex-col justify-between space-y-4">
+                    <div class="glass-panel p-6 border-l-4 border-l-red-500 bg-red-900/10">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-8 h-8 rounded bg-red-500/20 text-red-400 flex justify-center items-center"><i class="fas fa-code"></i></div>
+                            <h4 class="font-bold text-xl text-white">1. Outdated Skillsets are Automated</h4>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed pl-11">Basic Android App or traditional Web Development is no longer a USP. AI agents like Claude and Cursor generate this boilerplate code instantly.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-6 border-l-4 border-l-amber-500 bg-amber-900/10">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-8 h-8 rounded bg-amber-500/20 text-amber-400 flex justify-center items-center"><i class="fas fa-users-cog"></i></div>
+                            <h4 class="font-bold text-xl text-white">2. The "Developer" vs "AI Engineer" Gap</h4>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed pl-11">Tech companies demand engineers who know how to integrate APIs, orchestrate Large Language Models, and build systems *with* AI.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-6 border-l-4 border-l-sky-500 bg-sky-900/10">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-8 h-8 rounded bg-sky-500/20 text-sky-400 flex justify-center items-center"><i class="fas fa-brain"></i></div>
+                            <h4 class="font-bold text-xl text-white">3. The Missing Enterprise Edge</h4>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed pl-11">The fastest-growing sectors require Vector Databases, RAG architectures, and Multi-Agent Orchestration—rarely taught in standard curriculums.</p>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2 glass-panel p-8 flex flex-col items-center justify-center shadow-xl">
+                    <h4 class="text-center font-bold mb-2 text-sm text-white uppercase tracking-widest bg-slate-800 px-4 py-2 rounded-full inline-block">Hiring Market Demand (2022 - 2026)</h4>
+                    <p class="text-xs text-slate-400 mb-6 text-center max-w-sm">Decline in entry-level CRUD roles vs. surge in AI/LLM engineering.</p>
+                    <div class="w-full flex-grow relative" style="min-height: 300px;">
+                        <canvas id="jobMarketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+        <div class="w-full max-w-6xl text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-14">The Career <span class="text-gradient">Paradigm Shift</span></h2>
+            
+            <div class="flex flex-col md:flex-row justify-center items-stretch gap-6 relative">
+                <!-- The Old Way -->
+                <div class="glass-panel p-10 w-full md:w-[45%] flex flex-col justify-between opacity-60 hover:opacity-100 transition-opacity border border-red-500/20">
+                    <div>
+                        <div class="text-red-500 text-6xl mb-6 drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]"><i class="fas fa-times-circle"></i></div>
+                        <h3 class="text-3xl font-bold mb-2 text-white">The Old Reality</h3>
+                        <h4 class="text-red-400 font-bold mb-8 uppercase tracking-wider text-sm">Traditional Software Dev</h4>
+                        
+                        <ul class="text-left text-base text-slate-300 space-y-5 mb-8">
+                            <li class="flex items-start"><i class="fas fa-minus text-red-500/70 mr-4 mt-1"></i> <span>Writing standard CRUD operations.</span></li>
+                            <li class="flex items-start"><i class="fas fa-minus text-red-500/70 mr-4 mt-1"></i> <span>Basic HTML/CSS/JS or Android layouts.</span></li>
+                            <li class="flex items-start"><i class="fas fa-minus text-red-500/70 mr-4 mt-1"></i> <span>Manual, repetitive API data integrations.</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-950/40 p-4 rounded-xl text-sm text-red-200 border border-red-500/30 flex items-start gap-3">
+                        <i class="fas fa-exclamation-triangle mt-0.5 text-red-500"></i>
+                        <p><strong>Result:</strong> High risk of entry-level layoffs. Easily replaceable by AI coding tools.</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex flex-col justify-center items-center text-5xl text-slate-600 w-[10%] z-20">
+                    <div class="p-4 rounded-full bg-slate-800 border border-slate-700 shadow-xl relative">
+                        <div class="absolute inset-0 rounded-full animate-ping bg-sky-500/20"></div>
+                        <i class="fas fa-arrow-right text-sky-400 relative z-10"></i>
+                    </div>
+                </div>
+                
+                <!-- The New Way -->
+                <div class="glass-panel p-10 w-full md:w-[45%] flex flex-col justify-between border-sky-500/50 transform md:scale-110 z-10 shadow-2xl shadow-sky-900/30 bg-slate-800/90 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-sky-500 text-white text-[10px] px-3 py-1 font-bold uppercase tracking-widest rounded-bl-lg">High Demand</div>
+                    <div>
+                        <div class="text-sky-400 text-6xl mb-6 drop-shadow-[0_0_20px_rgba(56,189,248,0.6)]"><i class="fas fa-check-circle"></i></div>
+                        <h3 class="text-3xl font-bold mb-2 text-white">The New Standard</h3>
+                        <h4 class="text-sky-300 font-bold mb-8 uppercase tracking-wider text-sm">Agentic AI Engineering</h4>
+                        
+                        <ul class="text-left text-base text-slate-200 space-y-5 mb-8">
+                            <li class="flex items-start"><i class="fas fa-star text-sky-400 mr-4 mt-1"></i> <span>Building Autonomous, tool-using AI Agents.</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-sky-400 mr-4 mt-1"></i> <span>Mastering Vector DBs & Corporate RAG.</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-sky-400 mr-4 mt-1"></i> <span>LLM Orchestration & Prompt Engineering.</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-sky-900/40 p-4 rounded-xl text-sm text-sky-100 border border-sky-500/40 flex items-start gap-3">
+                        <i class="fas fa-rocket mt-0.5 text-sky-400"></i>
+                        <p><strong>Result:</strong> Highly sought after by MNCs. Commands premium salaries. Irreplaceable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+        <div class="w-full max-w-7xl text-center">
+            <h2 class="text-5xl md:text-6xl font-bold mb-6">The <span class="text-gradient">NP Teachcrafters</span> Solution</h2>
+            <p class="text-xl md:text-2xl text-slate-300 mb-12 max-w-5xl mx-auto font-light leading-relaxed">
+                A rigorous, MSME-approved <strong class="text-white">8-Week Data Science & AI Bootcamp</strong> engineered to take students from fundamental coding to deploying Enterprise Agents.
+            </p>
+            
+            <div class="flex flex-col lg:flex-row gap-10 items-center text-left">
+                <!-- GitHub Asset 2: offline-classroom.jpg -->
+                <div class="w-full lg:w-1/2 h-[450px] relative group">
+                    <div class="w-full h-full rounded-2xl overflow-hidden border border-sky-500/30 shadow-[0_0_30px_rgba(56,189,248,0.2)]">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10"></div>
+                        <img src="assets/offline-classroom.jpg" alt="NP Offline Classroom Training" class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105" onerror="this.src='https://placehold.co/800x600/1e293b/38bdf8?text=Offline+Classroom'">
+                        <div class="absolute bottom-6 left-6 z-20 flex flex-col gap-2">
+                            <span class="px-3 py-1 bg-sky-500 text-white text-xs font-bold rounded uppercase tracking-widest shadow-lg inline-block w-max">100% Offline Pedagogy</span>
+                            <span class="text-sm font-medium text-slate-200 bg-slate-900/80 px-3 py-1 rounded backdrop-blur border border-slate-700 inline-block w-max">Hands-on classroom instruction. No generic videos.</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6 border-l-4 border-l-purple-500 hover:bg-slate-800/80 transition-colors">
+                        <i class="fas fa-project-diagram text-3xl text-purple-400 mb-4"></i>
+                        <h3 class="font-bold text-lg text-white mb-2">End-to-End Projects</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">Students build 3-4 major industry capstones specifically tailored for robust developer portfolios.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-6 border-l-4 border-l-amber-500 hover:bg-slate-800/80 transition-colors">
+                        <i class="fas fa-certificate text-3xl text-amber-400 mb-4"></i>
+                        <h3 class="font-bold text-lg text-white mb-2">Govt. Certified</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">Graduates receive MSME & ISO recognized certificates to clear strict HR screening filters.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-6 border-l-4 border-l-emerald-500 hover:bg-slate-800/80 transition-colors sm:col-span-2 bg-emerald-900/10">
+                        <div class="flex items-center gap-4 mb-3">
+                            <i class="fas fa-handshake text-4xl text-emerald-400"></i>
+                            <h3 class="font-bold text-xl text-white">Placement Ready Execution</h3>
+                        </div>
+                        <p class="text-sm text-slate-300 leading-relaxed">Technical resume building, behavioral mock interviews, and guaranteed referrals to high-tier internship programs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+        <div class="w-full max-w-7xl">
+            <div class="flex justify-between items-end mb-10 border-b border-slate-700 pb-4">
+                <h2 class="text-4xl md:text-5xl font-bold">The Blueprint: <span class="text-gradient">Phase 1</span></h2>
+                <span class="px-5 py-1.5 bg-slate-800 rounded-full text-sm font-bold text-slate-300 border border-slate-600 shadow-inner tracking-widest uppercase">Weeks 1 - 4</span>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <div class="w-full lg:w-[55%] relative border-l-4 border-slate-700 pl-10 ml-4 space-y-12 py-4">
+                    <div class="relative group">
+                        <div class="absolute -left-[54px] top-1 w-7 h-7 bg-sky-500 rounded-full border-4 border-slate-900 shadow-[0_0_15px_rgba(56,189,248,0.5)] transition-transform group-hover:scale-125"></div>
+                        <h3 class="text-3xl font-bold text-white mb-2">Weeks 1-2: The Foundation</h3>
+                        <h4 class="text-sky-400 font-bold mb-4 tracking-wide uppercase text-sm">Python, Data Wrangling & EDA</h4>
+                        <div class="glass-panel p-6 inline-block w-full border-sky-500/20">
+                            <p class="text-slate-300 text-sm mb-4 italic">Establishing programming logic and statistical foundations.</p>
+                            <ul class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-slate-200 font-medium">
+                                <li class="flex items-center"><i class="fas fa-check text-sky-500 mr-3"></i> Advanced Python Concepts</li>
+                                <li class="flex items-center"><i class="fas fa-check text-sky-500 mr-3"></i> NumPy & Pandas Mastery</li>
+                                <li class="flex items-center"><i class="fas fa-check text-sky-500 mr-3"></i> Exploratory Data Analysis</li>
+                                <li class="flex items-center"><i class="fas fa-check text-sky-500 mr-3"></i> Visualization (Matplotlib)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <div class="absolute -left-[54px] top-1 w-7 h-7 bg-purple-500 rounded-full border-4 border-slate-900 shadow-[0_0_15px_rgba(168,85,247,0.5)] transition-transform group-hover:scale-125"></div>
+                        <h3 class="text-3xl font-bold text-white mb-2">Weeks 3-4: Predictive Intelligence</h3>
+                        <h4 class="text-purple-400 font-bold mb-4 tracking-wide uppercase text-sm">Machine Learning & Deep Learning</h4>
+                        <div class="glass-panel p-6 inline-block w-full border-purple-500/20">
+                            <p class="text-slate-300 text-sm mb-4 italic">Transitioning to predictive modeling and neural pattern recognition.</p>
+                            <ul class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm text-slate-200 font-medium">
+                                <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-3"></i> Supervised/Unsupervised ML</li>
+                                <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-3"></i> Scikit-Learn Framework</li>
+                                <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-3"></i> Neural Networks Basics</li>
+                                <li class="flex items-center"><i class="fas fa-check text-purple-400 mr-3"></i> CNNs & Deep Learning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- GitHub Asset 3: eda-session.jpg -->
+                <div class="w-full lg:w-[45%]">
+                    <div class="w-full h-[450px] rounded-2xl overflow-hidden border border-slate-600 shadow-2xl relative rotate-1 hover:rotate-0 transition-transform duration-500">
+                        <img src="assets/eda-session.jpg" alt="Instructor teaching EDA" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x600/1e293b/38bdf8?text=EDA+Session'">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-900 p-6 pt-12 z-20">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center"><i class="fas fa-search-chart"></i></div>
+                                <div>
+                                    <p class="text-white font-bold">Real-time Code Execution</p>
+                                    <p class="text-xs text-sky-300">Exploratory Data Analysis (EDA) Module</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+        <div class="w-full max-w-7xl">
+            <div class="flex justify-between items-end mb-10 border-b border-slate-700 pb-4">
+                <h2 class="text-4xl md:text-5xl font-bold">The Blueprint: <span class="text-gradient">Phase 2</span></h2>
+                <span class="px-5 py-1.5 bg-sky-900/60 rounded-full text-sm font-bold text-sky-300 border border-sky-500/40 shadow-[0_0_10px_rgba(56,189,248,0.2)] tracking-widest uppercase">Weeks 5 - 8 (The Differentiator)</span>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                <!-- GitHub Asset 4: advanced-training.jpg -->
+                <div class="w-full lg:w-[45%] order-2 lg:order-1">
+                    <div class="w-full h-[450px] rounded-2xl overflow-hidden border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.15)] relative -rotate-1 hover:rotate-0 transition-transform duration-500">
+                        <img src="assets/advanced-training.jpg" alt="Advanced Model Training" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x600/1e293b/10b981?text=Advanced+Training'">
+                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-slate-900 p-6 pt-12 z-20">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center"><i class="fas fa-layer-group"></i></div>
+                                <div>
+                                    <p class="text-white font-bold">Advanced Model Training</p>
+                                    <p class="text-xs text-emerald-300">Evaluating multi-variable dependencies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-[55%] order-1 lg:order-2 relative border-l-4 border-emerald-500/40 pl-10 ml-4 space-y-12 py-4">
+                    <div class="relative group">
+                        <div class="absolute -left-[54px] top-1 w-7 h-7 bg-emerald-500 rounded-full border-4 border-slate-900 shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
+                        <h3 class="text-3xl font-bold text-white mb-2">Weeks 5-6: The LLM Revolution</h3>
+                        <h4 class="text-emerald-400 font-bold mb-4 tracking-wide uppercase text-sm">Generative AI & Vector DBs (Mastering RAG)</h4>
+                        <div class="glass-panel p-6 inline-block w-full border-emerald-500/20 bg-emerald-900/10">
+                            <ul class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-slate-200 font-medium">
+                                <li class="flex items-start"><i class="fas fa-check text-emerald-500 mr-2 mt-1 shrink-0"></i> Prompt Engineering & APIs</li>
+                                <li class="flex items-start"><i class="fas fa-check text-emerald-500 mr-2 mt-1 shrink-0"></i> Vector DBs (Pinecone/Chroma)</li>
+                                <li class="flex items-start"><i class="fas fa-check text-emerald-500 mr-2 mt-1 shrink-0"></i> Robust RAG Pipelines</li>
+                                <li class="flex items-start"><i class="fas fa-check text-emerald-500 mr-2 mt-1 shrink-0"></i> Model Context Protocol (MCP)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <div class="absolute -left-[58px] top-0 w-9 h-9 bg-amber-500 rounded-full border-4 border-slate-900 flex justify-center items-center text-slate-900"><i class="fas fa-star text-sm"></i></div>
+                        <h3 class="text-3xl font-bold text-white mb-2">Weeks 7-8: The Future of Tech</h3>
+                        <h4 class="text-amber-400 font-bold mb-4 tracking-wide uppercase text-sm">Agentic AI & Multi-Agent Orchestration</h4>
+                        <div class="glass-panel p-6 inline-block w-full border-amber-500/40 bg-amber-900/10">
+                            <ul class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm text-slate-200 font-medium">
+                                <li class="flex items-start"><i class="fas fa-bolt text-amber-500 mr-2 mt-1 shrink-0"></i> Mastering LangChain</li>
+                                <li class="flex items-start"><i class="fas fa-bolt text-amber-500 mr-2 mt-1 shrink-0"></i> Autonomous Tool-Using Agents</li>
+                                <li class="flex items-start"><i class="fas fa-bolt text-amber-500 mr-2 mt-1 shrink-0"></i> Multi-Agent Orchestration</li>
+                                <li class="flex items-start"><i class="fas fa-bolt text-amber-500 mr-2 mt-1 shrink-0"></i> Capstone Deployment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+        <div class="w-full max-w-7xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-center">4 Major <span class="text-gradient">Industry Capstones</span></h2>
+            <p class="text-center text-lg text-slate-300 mb-12 font-light max-w-4xl mx-auto">We do not accept basic "To-Do List" apps. Students must build heavily requested enterprise architectures.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="glass-panel p-8 flex items-start border-t-2 border-t-red-500">
+                    <div class="w-16 h-16 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center text-3xl mr-6 shrink-0 border border-red-500/20"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2 text-white">1. Real-Time Fraud Detection System</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed">Engineered using robust ML algorithms to analyze live financial transaction data, identifying anomalies and preventing fraud.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs font-semibold px-3 py-1 bg-slate-800 rounded-full text-slate-300 border border-slate-600">Scikit-Learn</span> <span class="text-xs font-semibold px-3 py-1 bg-slate-800 rounded-full text-slate-300 border border-slate-600">Random Forest</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-8 flex items-start border-t-2 border-t-green-500">
+                    <div class="w-16 h-16 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center text-3xl mr-6 shrink-0 border border-green-500/20"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2 text-white">2. Market Predictor Neural Network</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed">A Deep Learning model analyzing historical market data to forecast trends. Demonstrates serious capability in tuning neural nets.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs font-semibold px-3 py-1 bg-slate-800 rounded-full text-slate-300 border border-slate-600">TensorFlow/PyTorch</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-8 flex items-start border-t-2 border-t-sky-500 bg-sky-900/10 shadow-[0_5px_20px_rgba(56,189,248,0.1)]">
+                    <div class="w-16 h-16 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-3xl mr-6 shrink-0"><i class="fas fa-database"></i></div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2 text-white">3. Corporate Document RAG Engine</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed">Securely ingests, indexes, and answers complex queries based on internal company PDFs. The #1 most requested feature by corporations.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs font-semibold px-3 py-1 bg-sky-900/50 text-sky-300 border border-sky-500/50 rounded-full">Pinecone</span> <span class="text-xs font-semibold px-3 py-1 bg-sky-900/50 text-sky-300 border border-sky-500/50 rounded-full">OpenAI API</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-panel p-8 flex items-start border-t-2 border-t-amber-500 bg-amber-900/10 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-amber-500/10 text-[100px]"><i class="fas fa-robot"></i></div>
+                    <div class="w-16 h-16 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-3xl mr-6 shrink-0 relative z-10"><i class="fas fa-network-wired"></i></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-bold mb-2 text-white">4. Autonomous Agentic Assistant</h3>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed">An AI Agent capable of receiving an abstract enterprise problem, breaking down tasks, browsing the internet, and executing code.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="text-xs font-semibold px-3 py-1 bg-amber-900/60 text-amber-300 border border-amber-500/50 rounded-full">LangChain</span> <span class="text-xs font-semibold px-3 py-1 bg-amber-900/60 text-amber-300 border border-amber-500/50 rounded-full">Agentic Architecture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+        <div class="w-full max-w-6xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-14 text-center">The <span class="text-gradient">Student Transformation</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-center relative z-10">
+                <div class="glass-panel p-8 hover:-translate-y-2 transition-transform duration-300 relative">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center text-3xl text-slate-300 border-4 border-slate-900 shadow-xl"><i class="far fa-file-alt"></i></div>
+                    <h3 class="text-2xl font-bold mb-4 mt-8 text-white">1. The Golden Resume</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">Constructing ATS-friendly resumes packed with heavily searched AI keywords (RAG, LLM, Fine-tuning). We ensure their GitHub repos showcase clean code.</p>
+                </div>
+                
+                <div class="glass-panel p-8 hover:-translate-y-2 transition-transform duration-300 relative border-blue-500/30">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-blue-900 text-blue-400 rounded-full flex items-center justify-center text-3xl border-4 border-slate-900"><i class="fab fa-linkedin-in"></i></div>
+                    <h3 class="text-2xl font-bold mb-4 mt-8 text-white">2. LinkedIn Optimization</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">Teaching students the algorithms to post their capstone project demos (videos & code blocks) to organically attract recruiter direct messages.</p>
+                </div>
+                
+                <div class="glass-panel p-8 hover:-translate-y-2 transition-transform duration-300 relative border-green-500/30 bg-green-900/5">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-green-900 text-green-400 rounded-full flex items-center justify-center text-3xl border-4 border-slate-900"><i class="fas fa-microphone-alt"></i></div>
+                    <h3 class="text-2xl font-bold mb-4 mt-8 text-white">3. Technical Pitching</h3>
+                    <p class="text-sm text-slate-300 leading-relaxed">Students present their final Capstone projects live. This builds the exact communication confidence needed to dominate HR and technical interviews.</p>
+                </div>
+            </div>
+            
+            <div class="mt-14 glass-panel p-8 text-center border-sky-500/40 shadow-[0_0_30px_rgba(56,189,248,0.15)] max-w-4xl mx-auto relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-sky-400 to-indigo-500"></div>
+                <p class="text-xl md:text-2xl font-light text-slate-200">
+                    "Modern tech companies hire <strong class="text-sky-400 font-bold">communicators who can code</strong>. They no longer hire silent coders who can't communicate."
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+        <div class="w-full max-w-6xl text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Certifications That <span class="text-gradient">Open Corporate Doors</span></h2>
+            <p class="text-xl text-slate-300 mb-16 max-w-4xl mx-auto font-light leading-relaxed">
+                An authenticated, formal 8-week training certificate is the absolute foundational requirement for cracking initial HR screening algorithms.
+            </p>
+            
+            <div class="flex flex-col md:flex-row justify-center items-stretch gap-12">
+                <div class="glass-panel p-10 w-full md:w-5/12 flex flex-col items-center shadow-2xl shadow-purple-900/20 border-t-4 border-t-purple-500">
+                    <div class="w-28 h-28 bg-gradient-to-br from-purple-900/50 to-slate-900 rounded-full flex items-center justify-center text-5xl text-purple-400 mb-8 border border-purple-500/30 shadow-inner"><i class="fas fa-stamp"></i></div>
+                    <h3 class="text-3xl font-bold mb-4 text-white">Govt. MSME Auth</h3>
+                    <p class="text-base text-slate-300 leading-relaxed">Officially registered under the Ministry of MSME (Govt. of India). Adds absolute, undeniable authenticity to a student's resume.</p>
+                </div>
+                
+                <div class="glass-panel p-10 w-full md:w-5/12 flex flex-col items-center shadow-2xl shadow-blue-900/20 border-t-4 border-t-blue-500">
+                    <div class="w-28 h-28 bg-gradient-to-br from-blue-900/50 to-slate-900 rounded-full flex items-center justify-center text-5xl text-blue-400 mb-8 border border-blue-500/30 shadow-inner"><i class="fas fa-globe-americas"></i></div>
+                    <h3 class="text-3xl font-bold mb-4 text-white">ISO 9001 Certified</h3>
+                    <p class="text-base text-slate-300 leading-relaxed">Meets rigorous global quality management standards. Holds significant weight for students applying to Multi-National Corporations (MNCs).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-14">
+        <div class="w-full max-w-6xl">
+            <div class="glass-panel p-12 border-l-[6px] border-l-emerald-500 shadow-2xl shadow-emerald-900/20 relative overflow-hidden">
+                <div class="absolute right-0 bottom-0 opacity-10 text-[300px] leading-none transform translate-y-1/4 translate-x-1/4 pointer-events-none"><i class="fas fa-chart-line"></i></div>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between relative z-10">
+                    <div class="w-full md:w-2/3 pr-10">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6">The Ultimate Institutional Goal: <br><span class="text-emerald-400">Internships & Placements</span></h2>
+                        <p class="text-xl text-slate-300 mb-10 font-light leading-relaxed">We do not abandon your students after handing them a certificate. We actively bridge the chasm between the classroom and the corporate payroll.</p>
+                        
+                        <ul class="space-y-6">
+                            <li class="flex items-start bg-emerald-900/10 p-4 rounded-xl border border-emerald-500/20">
+                                <div class="bg-emerald-500/20 p-2 rounded-lg text-emerald-400 mr-4 mt-1"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg mb-1">Direct Funnel for Top Performers</h4>
+                                    <p class="text-sm text-slate-300 leading-relaxed">The highest-scoring students from the cohort are funneled directly into partnered, paid internship opportunities.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start bg-emerald-900/10 p-4 rounded-xl border border-emerald-500/20">
+                                <div class="bg-emerald-500/20 p-2 rounded-lg text-emerald-400 mr-4 mt-1"><i class="fas fa-rupee-sign px-1"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-white text-lg mb-1">Competitive Stipends (₹10K - ₹30K)</h4>
+                                    <p class="text-sm text-slate-300 leading-relaxed">By holding specialized Agentic skills, students bypass unpaid grunt-work and secure highly competitive starting stipends.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="w-full md:w-1/3 mt-12 md:mt-0 flex flex-col items-center">
+                        <div class="w-56 h-56 rounded-full border-8 border-slate-800 flex items-center justify-center bg-emerald-900/30 text-emerald-400 shadow-[0_0_40px_rgba(16,185,129,0.4)] relative">
+                            <div class="absolute inset-0 rounded-full animate-ping opacity-20 border-4 border-emerald-400" style="animation-duration: 3s;"></div>
+                            <div class="text-center z-10 bg-slate-900/50 w-full h-full rounded-full flex flex-col justify-center items-center backdrop-blur-sm">
+                                <span class="block text-5xl font-black text-white drop-shadow-md">100%</span>
+                                <span class="block text-sm uppercase tracking-widest font-bold mt-2 text-emerald-300">Placement<br>Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-15">
+        <div class="w-full max-w-7xl text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Our Verified Footprint in <span class="text-gradient">Shahdol</span></h2>
+            <p class="text-xl text-slate-300 mb-14 max-w-4xl mx-auto font-light">NP Teachcrafters is already on the ground, actively shaping the tech landscape and upskilling youth within your specific region.</p>
+            
+            <div class="flex flex-col lg:flex-row justify-center items-stretch gap-10">
+                <div class="glass-panel p-10 w-full lg:w-1/2 relative overflow-hidden text-left flex flex-col justify-center shadow-xl border-sky-500/20">
+                    <div class="absolute -right-10 -bottom-10 opacity-[0.05] text-[200px]"><i class="fas fa-map-marked-alt"></i></div>
+                    
+                    <div class="flex items-center mb-8 relative z-10 bg-sky-900/20 p-4 rounded-xl border border-sky-500/30 w-max">
+                        <div class="w-20 h-20 rounded-full bg-sky-500 text-white flex items-center justify-center text-4xl mr-5 shadow-[0_0_20px_rgba(56,189,248,0.5)]"><i class="fas fa-users"></i></div>
+                        <div>
+                            <h3 class="text-5xl font-black text-white drop-shadow-md">150+</h3>
+                            <p class="text-sky-300 font-bold uppercase tracking-widest text-sm mt-1">Active Enrolled Students</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-lg text-slate-200 mb-8 relative z-10 leading-relaxed font-light">We are currently delivering advanced Data Science and AI modules to over 150 students specifically selected from Shahdol.</p>
+                    
+                    <div class="glass-panel p-5 border-l-4 border-l-emerald-500 relative z-10 bg-emerald-900/10">
+                        <h4 class="font-bold text-white text-lg flex items-center gap-2"><i class="fas fa-server text-emerald-400"></i> Infrastructure Ready</h4>
+                        <p class="text-sm text-slate-300 mt-2">Our seasoned instructors and hardware requirements are already deployed locally. Zero mobilization delay.</p>
+                    </div>
+                </div>
+                
+                <!-- GitHub Asset 5 & 6: students-coding.mp4 (Video) + shahdol-students.jpg (Poster) -->
+                <div class="w-full lg:w-1/2">
+                    <div class="w-full h-full min-h-[450px] rounded-2xl overflow-hidden border border-slate-600 shadow-2xl relative group bg-slate-900">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-sky-900/40 via-transparent to-transparent mix-blend-overlay z-10 pointer-events-none"></div>
+                        
+                        <!-- Video implementation referencing the MP4 file -->
+                        <video autoplay loop muted playsinline class="w-full h-full object-cover transform transition-transform duration-1000 group-hover:scale-105" poster="assets/shahdol-students.jpg">
+                            <source src="assets/students-coding.mp4" type="video/mp4">
+                            <!-- Fallback image if video fails to load -->
+                            <img src="assets/shahdol-students.jpg" alt="Live coding session" class="w-full h-full object-cover">
+                        </video>
+                        
+                        <div class="absolute bottom-6 right-6 z-20">
+                            <div class="flex items-center gap-3 px-4 py-2 bg-slate-900/95 rounded-full backdrop-blur border border-slate-600 shadow-xl">
+                                <span class="relative flex h-3 w-3">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                                </span>
+                                <span class="text-white text-xs font-bold tracking-widest uppercase">Live Shahdol Cohort • Coding</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-16">
+        <div class="w-full max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Why Partner With Us?</h2>
+                <span class="inline-block px-6 py-2 bg-sky-900/40 border border-sky-500/50 rounded-full text-sky-300 font-bold tracking-widest uppercase text-sm shadow-[0_0_15px_rgba(56,189,248,0.2)]">The Concrete ROI for Your Institution</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-panel p-8 border border-slate-700 hover:border-sky-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(56,189,248,0.15)]">
+                    <div class="flex items-center mb-6">
+                        <div class="w-14 h-14 rounded-xl bg-sky-900/80 text-sky-400 flex items-center justify-center mr-5 text-2xl"><i class="fas fa-chart-pie"></i></div>
+                        <h3 class="text-2xl font-bold text-white">Massively Boost Placements</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Aligning your student body with the highest-hiring AI sector guarantees a significantly higher percentage of successful on-campus and off-campus placements, directly improving college metrics.</p>
+                </div>
+                
+                <div class="glass-panel p-8 border border-slate-700 hover:border-purple-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]">
+                    <div class="flex items-center mb-6">
+                        <div class="w-14 h-14 rounded-xl bg-purple-900/80 text-purple-400 flex items-center justify-center mr-5 text-2xl"><i class="fas fa-crown"></i></div>
+                        <h3 class="text-2xl font-bold text-white">Institutional Prestige</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Become the pioneering college in the Shahdol region to offer specialized "Agentic AI" training. This serves as a powerful marketing tool to attract higher-quality student admissions.</p>
+                </div>
+                
+                <div class="glass-panel p-8 border border-slate-700 hover:border-amber-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]">
+                    <div class="flex items-center mb-6">
+                        <div class="w-14 h-14 rounded-xl bg-amber-900/80 text-amber-400 flex items-center justify-center mr-5 text-2xl"><i class="fas fa-cogs"></i></div>
+                        <h3 class="text-2xl font-bold text-white">Zero Friction Execution</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">We handle 100% of the operational load. We provide the updated syllabus, expert trainers, technology stack, project evaluation, and official certifications.</p>
+                </div>
+                
+                <div class="glass-panel p-8 border border-slate-700 hover:border-emerald-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]">
+                    <div class="flex items-center mb-6">
+                        <div class="w-14 h-14 rounded-xl bg-emerald-900/80 text-emerald-400 flex items-center justify-center mr-5 text-2xl"><i class="fas fa-award"></i></div>
+                        <h3 class="text-2xl font-bold text-white">NAAC & NBA Accreditation</h3>
+                    </div>
+                    <p class="text-slate-300 text-sm leading-relaxed">Formal industry-academia MOUs, Govt-recognized MSME certifications, and integration of modern tech workshops add massive quantifiable weight to NAAC/NBA scoring.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-17">
+        <div class="w-full max-w-7xl">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center">How We Guarantee <span class="text-gradient">Maximum Enrollment</span></h2>
+            <p class="text-center text-lg text-slate-300 mb-12 max-w-4xl mx-auto font-light">A great curriculum is useless without students. We utilize high-conversion, psychologically-driven digital marketing tailored for Gen-Z to maximize your batch sizes.</p>
+            
+            <div class="flex flex-col lg:flex-row justify-center items-center gap-12">
+                <!-- Phone Mockup showing Instagram Ad -->
+                <div class="w-[320px] h-[600px] bg-black rounded-[3rem] border-[10px] border-slate-800 relative overflow-hidden shadow-2xl flex flex-col shrink-0">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-7 bg-slate-800 rounded-b-3xl z-20"></div>
+                    <div class="bg-slate-900 flex-1 overflow-y-auto overflow-x-hidden text-sm scrollbar-hide">
+                        <div class="flex items-center p-4 border-b border-slate-800 bg-slate-950">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-fuchsia-600 p-0.5">
+                                <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center text-sm font-bold text-white border-2 border-slate-900">NP</div>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-white font-bold text-sm tracking-tight">nptechcrafters</div>
+                                <div class="text-sky-400 font-medium text-[11px] flex items-center gap-1"><i class="fas fa-map-marker-alt"></i> Shahdol, Madhya Pradesh</div>
+                            </div>
+                        </div>
+                        <div class="w-full h-72 bg-gradient-to-br from-slate-800 to-slate-900 relative flex flex-col items-center justify-center p-5 text-center border-b border-slate-800">
+                            <h3 class="text-2xl font-black text-white mb-2 title-font leading-tight z-10 shadow-black drop-shadow-md">STOP LEARNING<br><span class="text-red-500 bg-red-500/10 px-2 py-1 rounded">OUTDATED TECH.</span></h3>
+                            <p class="text-xs text-sky-400 font-black tracking-widest mb-6 z-10">THE FUTURE IS AGENTIC AI.</p>
+                            <div class="bg-white text-black px-5 py-2 font-black text-xs rounded shadow-[0_0_15px_rgba(255,255,255,0.3)] uppercase mb-3 z-10 animate-pulse">8-Week Masterclass</div>
+                            <div class="text-[11px] text-slate-300 font-semibold z-10 bg-black/50 px-3 py-1 rounded-full border border-slate-700 backdrop-blur-sm">MSME Approved • 4 Capstones</div>
+                        </div>
+                        <div class="px-4 pb-6 bg-slate-950 min-h-[200px] pt-4">
+                            <p class="text-white text-xs leading-relaxed"><span class="font-bold mr-2 text-sm">nptechcrafters</span> Everyone is talking about ChatGPT, but the real demand is building the AI that works for you. 🤯🤖</p>
+                            <p class="text-slate-300 text-[11px] mt-3 leading-relaxed">Welcome to the Advanced Cert in Data Science & Agentic AI. We aren't teaching basic coding. We build Autonomous Systems.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full lg:w-1/2 flex flex-col justify-center space-y-6">
+                    <div class="glass-panel p-8 border-l-4 border-sky-500 bg-sky-900/10">
+                        <h4 class="font-bold text-white text-xl mb-2"><i class="fas fa-fire-alt text-sky-400 mr-2"></i> The "FOMO" Angle</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed pl-7">We leverage the 'Fear Of Missing Out'. Copywriting focused on: "8 Weeks. 4 Capstones. 1 Govt-Approved MSME Certification. Don't let your peers steal the AI jobs."</p>
+                    </div>
+                    <div class="glass-panel p-8 border-l-4 border-purple-500 bg-purple-900/10">
+                        <h4 class="font-bold text-white text-xl mb-2"><i class="fas fa-crosshairs text-purple-400 mr-2"></i> The USP Focus</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed pl-7">We differentiate from cheap online courses: "We aren't just teaching basic coding. Build actual Autonomous Agentic Systems using LangChain in an offline, guided environment."</p>
+                    </div>
+                    <div class="glass-panel p-8 border-l-4 border-emerald-500 bg-emerald-900/10">
+                        <h4 class="font-bold text-white text-xl mb-2"><i class="fas fa-bullhorn text-emerald-400 mr-2"></i> Localized Execution</h4>
+                        <p class="text-sm text-slate-300 leading-relaxed pl-7">We utilize targeted local geo-tags (Shahdol campuses) and direct Call-To-Action (CTA) links to highly optimized landing pages for seamless student registration.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-18">
+        <div class="slide-bg-glow" style="background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(15,23,42,0) 70%);"></div>
+        <div class="text-center max-w-5xl">
+            <h2 class="text-6xl md:text-7xl font-bold mb-6 tracking-tight">Let's Build the <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-sky-400">Future Together.</span></h2>
+            <p class="text-xl md:text-2xl text-slate-300 mb-14 font-light max-w-3xl mx-auto leading-relaxed">Empower your college's students with the exact high-end technological skills that top MNCs are actively fighting to hire.</p>
+            
+            <div class="glass-panel p-10 inline-block text-left mb-14 shadow-2xl border border-slate-600 bg-slate-800/80">
+                <h4 class="text-emerald-400 font-bold mb-6 uppercase tracking-widest text-sm border-b border-slate-700 pb-3"><i class="fas fa-clipboard-check mr-2"></i> Immediate Next Steps</h4>
+                <ul class="space-y-5 text-slate-200 font-medium">
+                    <li class="flex items-center"><i class="fas fa-arrow-right text-emerald-500 mr-4 text-lg"></i> <span class="bg-slate-900/50 px-3 py-1 rounded">1. Finalize Batch Size & Lab Logistics</span></li>
+                    <li class="flex items-center"><i class="fas fa-arrow-right text-emerald-500 mr-4 text-lg"></i> <span class="bg-slate-900/50 px-3 py-1 rounded">2. Schedule Free Orientation Seminar for Students</span></li>
+                    <li class="flex items-center"><i class="fas fa-arrow-right text-emerald-500 mr-4 text-lg"></i> <span class="bg-emerald-900/40 text-emerald-100 px-3 py-1 rounded border border-emerald-500/30">3. Sign MOU for Formal Academic Collaboration</span></li>
+                </ul>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center space-y-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-sky-500/20">NP</div>
+                    <h3 class="text-3xl font-black text-white tracking-wide">NP Teachcrafters</h3>
+                </div>
+                <div class="flex items-center justify-center gap-6 text-slate-300 font-medium bg-slate-800/50 px-6 py-3 rounded-full border border-slate-700">
+                    <span class="flex items-center hover:text-sky-400 transition-colors"><i class="fas fa-phone-alt text-sky-400 mr-3"></i> +91 73895 41104</span> 
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                    <span class="flex items-center hover:text-sky-400 transition-colors"><i class="fab fa-whatsapp text-emerald-400 mr-3 text-lg"></i> +91 91491 88705</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 18;
+        let chartInitialized = false;
+
+        function updateSlideCounter() {
+            document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+            const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        function changeSlide(direction) {
+            const oldSlide = document.getElementById(`slide-${currentSlide}`);
+            oldSlide.classList.remove('active');
+            
+            currentSlide += direction;
+            
+            if (currentSlide > totalSlides) currentSlide = 1;
+            if (currentSlide < 1) currentSlide = totalSlides;
+            
+            const newSlide = document.getElementById(`slide-${currentSlide}`);
+            newSlide.classList.add('active');
+            
+            updateSlideCounter();
+
+            if (currentSlide === 6 && !chartInitialized) {
+                setTimeout(() => {
+                    initChart();
+                    chartInitialized = true;
+                }, 300);
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault(); 
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                changeSlide(-1);
+            }
+        });
+
+        function initChart() {
+            const canvas = document.getElementById('jobMarketChart');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            Chart.defaults.color = '#94a3b8';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.font.size = 13;
+            
+            new Chart(ctx, {
+                type: 'line', 
+                data: {
+                    labels: ['2022', '2023', '2024', '2025', '2026 (Proj)'],
+                    datasets: [
+                        {
+                            label: 'Standard Dev Roles (CRUD, Web)',
+                            data: [100, 85, 60, 45, 30],
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)', 
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#ef4444',
+                            pointRadius: 5,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'AI / LLM / Agentic Engineers',
+                            data: [15, 30, 75, 120, 160],
+                            backgroundColor: 'rgba(56, 189, 248, 0.2)', 
+                            borderColor: 'rgba(56, 189, 248, 1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#38bdf8',
+                            pointRadius: 5,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#cbd5e1', font: { weight: 'bold' } } },
+                        tooltip: { mode: 'index', intersect: false, backgroundColor: 'rgba(15, 23, 42, 0.95)' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            title: { display: true, text: 'Relative Demand Index' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                    animation: { duration: 2500, easing: 'easeOutQuart' }
+                }
+            });
+        }
+
+        updateSlideCounter();
+    </script>
+</body>
+</html>
